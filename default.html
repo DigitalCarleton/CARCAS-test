@@ -99,9 +99,6 @@
   <button slot="hotspot-dim+X-Y" class="dim" data-position="1 -1 0" data-normal="1 0 0"></button>
   <button slot="hotspot-dot+X-Y-Z" class="dot" data-position="1 -1 -1" data-normal="1 0 0"></button>
   <button slot="hotspot-dim+X-Z" class="dim" data-position="1 0 -1" data-normal="1 0 0"></button>
-  <!-- <button slot="hotspot-dot+X+Y-Z" class="dot show" data-position="1 1 -1" data-normal="0 1 0"></button>
-  <button slot="hotspot-dim+Y-Z" class="dim show" data-position="0 -1 -1" data-normal="0 1 0"></button>
-  <button slot="hotspot-dot-X+Y-Z" class="dot show" data-position="-1 1 -1" data-normal="0 1 0"></button>   -->
   <button slot="hotspot-dot+X+Y-Z" class="dot" data-position="1 1 -1" data-normal="0 1 0"></button>
   <button slot="hotspot-dim+Y-Z" class="dim" data-position="0 1 -1" data-normal="0 1 0"></button>
   <button slot="hotspot-dim-Y+Z" class="dim" data-position="0 -1 1" data-normal="0 -1 0"></button>
@@ -160,18 +157,6 @@
           setVisibility(hotspot);
         });
       });
-
-
-      // checkbox.addEventListener('change', () => {
-      //   setVisibility(modelViewer.querySelector('#dimLines')); // part of attempt to show dim lines, no rotate issues
-      //   modelViewer.querySelectorAll('button').forEach((hotspot) => {
-      //     if (checkbox.checked) {
-      //       hotspot.classList.remove('hide');
-      //     } else {
-      //       hotspot.classList.add('hide');
-      //     }
-      //   });
-      // });
 
 
       // Give each line a start and end point,
