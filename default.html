@@ -119,6 +119,7 @@
   </svg>
 
   <div id="controls" class="dim"> 
+    <!-- Drop down menu for model file. Notice ../ allows you to move up a directory. -->
     <label for="src">Animal:</label>
     <select id="src">
       <option value="sheep.glb">Sheep</option>
@@ -126,8 +127,16 @@
       <option value="../goat/DomesticGoat1.glb">Goat</option>
     </select><br>
 
+    <!-- Radio button for cms to inches -->
+    <input type="radio" id="cms" name="user-units" value="cms" checked>
+    <label for="cms">Centimeters</label>
+
+    <input type="radio" id="inches" name="user-units" value="inches">
+    <label for="inches">Inches</label><br>
+
+    <!-- Checkbox for showing dimensions -->
     <label for="show-dimensions">Show Dimensions:</label>
-    <input id="show-dimensions" type="checkbox" >
+    <input id="show-dimensions" type="checkbox" checked>
   </div>
     </model-viewer>  
 
@@ -138,7 +147,6 @@
         modelViewer.src = event.target.value;
       });
 
-    
       // Only show dimensions if box is checked
 
       const checkbox = modelViewer.querySelector('#show-dimensions');
@@ -194,9 +202,7 @@
 
       modelViewer.addEventListener('camera-change', renderSVG); 
 
-
-      // Tell the hotspots where they go in relation to the model
-      // Put the text on the dimension boxes
+      // Set the positions of all the hotspots on page load
 
       modelViewer.addEventListener('load', () => {
         const center = modelViewer.getBoundingBoxCenter();
@@ -214,9 +220,7 @@
           name: 'hotspot-dim+X-Y',
           position: `${center.x + x2} ${center.y - y2} ${center.z}`
         });
-        modelViewer.querySelector('button[slot="hotspot-dim+X-Y"]').textContent =
-            `${(size.z).toFixed(2)} cm`;
-        // Changed this line from `${(size.z * 100).toFixed(0)} cm`. Same with next four.
+
     
         modelViewer.updateHotspot({
           name: 'hotspot-dot+X-Y-Z',
@@ -227,8 +231,7 @@
           name: 'hotspot-dim+X-Z',
           position: `${center.x + x2} ${center.y} ${center.z - z2}`
         });
-        modelViewer.querySelector('button[slot="hotspot-dim+X-Z"]').textContent =
-            `${(size.y).toFixed(2)} cm`;
+
     
         modelViewer.updateHotspot({
           name: 'hotspot-dot+X+Y-Z',
@@ -239,8 +242,7 @@
           name: 'hotspot-dim+Y-Z',
           position: `${center.x} ${center.y + y2} ${center.z - z2}`
         });
-        modelViewer.querySelector('button[slot="hotspot-dim+Y-Z"]').textContent =
-            `${(size.x).toFixed(2)} cm`;
+
     
         modelViewer.updateHotspot({
           name: 'hotspot-dot-X+Y-Z',
@@ -251,9 +253,8 @@
           name: 'hotspot-dim-X-Z',
           position: `${center.x - x2} ${center.y} ${center.z - z2}`
         });
-        modelViewer.querySelector('button[slot="hotspot-dim-X-Z"]').textContent =
-            `${(size.y).toFixed(2)} cm`;
-    
+
+
         modelViewer.updateHotspot({
           name: 'hotspot-dot-X-Y-Z',
           position: `${center.x - x2} ${center.y - y2} ${center.z - z2}`
@@ -263,8 +264,7 @@
           name: 'hotspot-dim-X-Y',
           position: `${center.x - x2} ${center.y - y2} ${center.z}`
         });
-        modelViewer.querySelector('button[slot="hotspot-dim-X-Y"]').textContent =
-            `${(size.z).toFixed(2)} cm`;
+
     
         modelViewer.updateHotspot({
           name: 'hotspot-dot-X-Y+Z',
@@ -275,12 +275,78 @@
           name: 'hotspot-dim-Y+Z',
           position: `${center.x} ${center.y - y2} ${center.z + z2}`
         });
-
-        modelViewer.querySelector('button[slot="hotspot-dim-Y+Z"]').textContent =
-            `${(size.x).toFixed(2)} cm`;
+        
 
         renderSVG(); 
       });
+
+      // Add the text in appropriate units based off of the radio button
+      // The load event sets the text upon page load
+      // The change event reruns the code every time a user selects a different
+      // choice on any of the menu/radio/checkbox.
+      
+      const toInchesConversion = 0.393701 // Add more decimal places for higher precision!
+
+      function drawLabels(size) {
+        if(document.getElementById('cms').checked == true) {   
+          modelViewer.querySelector('button[slot="hotspot-dim+X-Y"]').textContent =
+          `${(size.z).toFixed(2)} cm`;  
+
+          modelViewer.querySelector('button[slot="hotspot-dim+X-Z"]').textContent =
+          `${(size.y).toFixed(2)} cm`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim+Y-Z"]').textContent =
+          `${(size.x).toFixed(2)} cm`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-X-Z"]').textContent =
+          `${(size.y).toFixed(2)} cm`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-X-Y"]').textContent =
+          `${(size.z).toFixed(2)} cm`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-Y+Z"]').textContent =
+          `${(size.x).toFixed(2)} cm`;
+        } else {  
+          modelViewer.querySelector('button[slot="hotspot-dim+X-Y"]').textContent =
+          `${(size.z * toInchesConversion).toFixed(1)} in`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim+X-Z"]').textContent =
+          `${(size.y * toInchesConversion).toFixed(1)} in`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim+Y-Z"]').textContent =
+          `${(size.x * toInchesConversion).toFixed(1)} in`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-X-Z"]').textContent =
+          `${(size.y * toInchesConversion).toFixed(1)} in`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-X-Y"]').textContent =
+          `${(size.z * toInchesConversion).toFixed(1)} in`;
+
+          modelViewer.querySelector('button[slot="hotspot-dim-Y+Z"]').textContent =
+          `${(size.x * toInchesConversion).toFixed(1)} in`;
+        } 
+      }
+
+      modelViewer.addEventListener('load', () => {
+        const center = modelViewer.getBoundingBoxCenter();
+        const size = modelViewer.getDimensions();
+        const x2 = size.x / 2;
+        const y2 = size.y / 2;
+        const z2 = size.z / 2;
+
+        drawLabels(size);
+      });
+
+      modelViewer.addEventListener('change', () => {
+        const center = modelViewer.getBoundingBoxCenter();
+        const size = modelViewer.getDimensions();
+        const x2 = size.x / 2;
+        const y2 = size.y / 2;
+        const z2 = size.z / 2;
+
+        drawLabels(size);
+      });
+
     </script>
 
     <!-- <script src="script.js"></script> -->
