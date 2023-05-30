@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>&lt;model-viewer&gt; template</title>
+    <title>Test CARCAS model viewer</title>
     <meta charset="utf-8">
-    <meta name="description" content="&lt;model-viewer&gt; template">
+    <meta name="description" content="Testing new features for the CARCAS model viewer.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" href="./styles.css" rel="stylesheet"/>
     <!-- OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
@@ -13,7 +13,7 @@
     <style>
       #controls {
         position: absolute;
-        bottom: 16px;
+        top: 16px;
         left: 16px;
         max-width: unset;
         transform: unset;
@@ -79,9 +79,20 @@
       }
     </style>
     <!-- <model-viewer> HTML element -->
-    <model-viewer id="dimension-demo" ar ar-modes="webxr" ar-scale="fixed" min-camera-orbit="-180deg 0deg auto" max-camera-orbit="180deg 180deg auto" shadow-intensity="1" camera-controls touch-action="pan-y" src="sheep.glb" alt="A 3D model of a sheep.">
+    <model-viewer id="dimension-demo" 
+                  ar ar-modes="webxr scene-viewer quick-look" 
+                  ar-scale="fixed" 
+                  min-camera-orbit="-180deg 0deg auto" 
+                  max-camera-orbit="180deg 180deg auto" 
+                  shadow-intensity="1" 
+                  camera-controls touch-action="pan-y" 
+                  src="../sheep/sheep_mm.glb" 
+                  alt="A 3D model of a sheep."
+                  environment-image="neutral" 
+                  poster="../sheep/poster.webp" 
+                  shadow-intensity="1">
     <!-- <model-viewer bounds="tight" id="dimension-demo" src="lizard.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls environment-image="neutral" poster="poster.webp" shadow-intensity="1"> -->
-      <!-- <div class="progress-bar hide" slot="progress-bar">
+      <div class="progress-bar hide" slot="progress-bar">
           <div class="update-bar"></div>
       </div>
       <button slot="ar-button" id="ar-button">
@@ -89,7 +100,7 @@
       </button>
       <div id="ar-prompt">
           <img src="ar_hand_prompt.png">
-      </div> -->
+      </div>
 
       <!-- Place hotstops on some corners of the viewport 
       as endpoints for dimension lines.
@@ -122,9 +133,9 @@
     <!-- Drop down menu for model file. Notice ../ allows you to move up a directory. -->
     <label for="src">Animal:</label>
     <select id="src">
-      <option value="sheep.glb">Sheep</option>
-      <option value="../horse/horse.glb">Horse</option>
-      <option value="../goat/DomesticGoat1.glb">Goat</option>
+      <option value="../sheep/sheep_mm.glb">Sheep</option>
+      <option value="../horse/horse_mm.glb">Horse</option>
+      <option value="../goat/goat_mm.glb">Goat</option>
     </select><br>
 
     <!-- Radio button for cms to inches -->
@@ -284,28 +295,30 @@
       // The load event sets the text upon page load
       // The change event reruns the code every time a user selects a different
       // choice on any of the menu/radio/checkbox.
-      
-      const toInchesConversion = 0.393701 // Add more decimal places for higher precision!
+
+      // size of model viewer is in meters by default
+
+      const toInchesConversion = 39.3701 // Add more decimal places for higher precision!
 
       function drawLabels(size) {
         if(document.getElementById('cms').checked == true) {   
           modelViewer.querySelector('button[slot="hotspot-dim+X-Y"]').textContent =
-          `${(size.z).toFixed(2)} cm`;  
+          `${(size.z * 100).toFixed(1)} cm`;  
 
           modelViewer.querySelector('button[slot="hotspot-dim+X-Z"]').textContent =
-          `${(size.y).toFixed(2)} cm`;
+          `${(size.y * 100).toFixed(1)} cm`;
 
           modelViewer.querySelector('button[slot="hotspot-dim+Y-Z"]').textContent =
-          `${(size.x).toFixed(2)} cm`;
+          `${(size.x * 100).toFixed(1)} cm`;
 
           modelViewer.querySelector('button[slot="hotspot-dim-X-Z"]').textContent =
-          `${(size.y).toFixed(2)} cm`;
+          `${(size.y * 100).toFixed(1)} cm`;
 
           modelViewer.querySelector('button[slot="hotspot-dim-X-Y"]').textContent =
-          `${(size.z).toFixed(2)} cm`;
+          `${(size.z * 100).toFixed(1)} cm`;
 
           modelViewer.querySelector('button[slot="hotspot-dim-Y+Z"]').textContent =
-          `${(size.x).toFixed(2)} cm`;
+          `${(size.x * 100).toFixed(1)} cm`;
         } else {  
           modelViewer.querySelector('button[slot="hotspot-dim+X-Y"]').textContent =
           `${(size.z * toInchesConversion).toFixed(1)} in`;
