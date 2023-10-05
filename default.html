@@ -73,12 +73,15 @@
       .hide{
         display: none;
       }
+     
       /* This keeps child nodes hidden while the element loads */
       :not(:defined) > * {
         display: none;
       }
     </style>
     <!-- <model-viewer> HTML element -->
+      
+    <!-- can't tell if bounds="tight" does anything -->
     <model-viewer id="dimension-demo" 
                   ar ar-modes="webxr scene-viewer quick-look" 
                   ar-scale="fixed" 
@@ -89,8 +92,8 @@
                   src="../sheep/sheep_mm.glb" 
                   alt="A 3D model of a sheep."
                   environment-image="neutral" 
-                  poster="../sheep/poster.webp" 
-                  shadow-intensity="1">
+                  poster="../sheep/poster.webp"
+                  bounds="tight">
     <!-- <model-viewer bounds="tight" id="dimension-demo" src="lizard.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls environment-image="neutral" poster="poster.webp" shadow-intensity="1"> -->
       <div class="progress-bar hide" slot="progress-bar">
           <div class="update-bar"></div>
